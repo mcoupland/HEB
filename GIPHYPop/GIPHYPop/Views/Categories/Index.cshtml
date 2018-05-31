@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNet.Identity;
+@model IEnumerable<GIPHYPop.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage Categories</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Image Count
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+                    GIPHYPop.Models.ApplicationDbContext db = new GIPHYPop.Models.ApplicationDbContext();
+                    Guid userid = Guid.Parse(User.Identity.GetUserId());
+                    List<int> categories = db.Categories.Where(c => c.UserId == userid).Select(c => c.Id).ToList();
+                    List<GIPHYPop.Models.Gif> gifs = db.Gifs.Where(g => categories.Contains(g.CategoryId)).ToList();
+                }
+                @gifs.Count
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

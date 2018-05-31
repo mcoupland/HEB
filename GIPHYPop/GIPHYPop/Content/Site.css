@@ -1,0 +1,80 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+/* Custom CSS */
+body{
+    background-color: #dddddd;
+}
+.navbar-inverse {
+    background-color: #444444;
+    border-color: #000000;
+}
+div.jumbotron {
+    background-color:#ffffff;
+    padding:10px;
+    margin-left:90px;
+    margin-right:90px;
+    margin-top: -5px;
+    margin-bottom: 30px;
+    border-radius: 6px;
+}
+div.jumbotron h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    margin-left:20px;
+    margin-right:20px;
+}
+.jumbotron p.lead{
+    text-align:center;
+}
+#logoheader{
+    background-color:#ffffff;
+    padding:30px;
+    margin:0px;
+}
+.giphyimage {
+    width: 300px;
+    margin: 5px;
+    padding: 1px;
+    border: 1px solid #021a40;
+    background-color: aliceblue;
+}
+.image-250 {
+    padding-right: 0px;
+    padding-left: 0px;
+    width: auto;
+}
+#instructions{
+    text-align:center;
+    margin:20px;
+}
+.centered{
+    text-align:center;
+}
+footer {
+    position: fixed;
+    bottom: 0px;
+}

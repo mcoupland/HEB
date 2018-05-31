@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("GIPHYPop", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    GIFs
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Search GIPHY", "SearchGiphy", "Gifs")</li>
+                                    <li>@Html.ActionLink("Saved GIFs", "Index", "Gifs")</li>
+                                </ul>
+                            </li>
+                            <li>@Html.ActionLink("Manage Categories", "Index", "Categories")</li>
+                        </ul>
+                    }
+                }
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (User.Identity.IsAuthenticated && Request.RawUrl != "/")
+        {
+            <h1 class="centered" id="logoheader"><label id="logo"><img src="~/Content/jiffypop2.png" style="width:75px;margin-right:15px;" />GIPHYPop</label></h1>
+        }
+    }
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <footer>
+            <p>&copy; @DateTime.Now.Year - GIPHYPop</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        //Handle the image click to return to home
+        $('#logo').on("click", function (e) {
+            window.location.href = '/';
+        });
+        //Handle the mouseover to turn cursor to pointer
+        $('#logo').hover(function () {
+            $(this).css('cursor', 'pointer');
+        });
+    </script>
+</body>
+</html>

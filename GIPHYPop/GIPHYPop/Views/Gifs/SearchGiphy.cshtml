@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "SearchGiphy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search GIPHY</h2>
+
+<!-- Search Form -->
+<div class="row">
+    <div class="col-md-12 forms">
+        <form method="post" id="searchform">
+            <fieldset>
+                <label for="searchterms">Search Terms:</label>
+                <input type="text" id="searchterms" value="" />
+                <label for="count">Number of Results</label>
+                <input type="number" id="count" value="8" min="1" max="24" />
+                <label>&nbsp;</label>
+                <input type="submit" value="Search GIPHY" class="submit" />
+            </fieldset>
+        </form>
+        <br />
+        <h2 id="instructions" class="col-md-12" style="visibility:hidden">Click on an image to save it to your favorites.</h2>
+    </div>
+</div>
+
+<!-- Place holder for images -->
+<div class="row">
+    <div class="col-md-12">
+        <form id="addgif" name="addgif" method="post" target="_self" action="/Gifs/Add">
+            <input type="hidden" id="imgurl" />
+            <input type="hidden" id="imgname" />
+            <div id="images" class="col-md-12"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Place holder for pagination -->
+<div class="row" style="text-align:center;">
+        <p id="leftpagination" class="col-md-1"></p>
+        <p id="rightpagination" class="col-md-1"></p>
+</div>
+<!-- Pre-load the jquery -->
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+
+
+<script>
+    //Set focus on load
+    $('#searchterms').focus();
+
+    //Perform GIPHY search and load results
+    $('#searchform').submit(function (e) {
+        $('#instructions').css('visibility', 'visible');
+        e.preventDefault();
+        var searchurl = 'https://api.giphy.com/v1/gifs/search?q=' + $(searchterms).val() + '&limit=' + $(count).val() + '&rating=g&api_key=rPzvc39Z4f48P3GoYEpDKDW8j5zIX49W';
+        $.ajax({
+            url: searchurl,
+            data: $(this).serialize(),
+            success: function (response) {
+                $('#images').empty();
+                loadimages(response);
+            }
+        });
+        
+    });
+
+    function loadimages(response) {
+        //Create an image for each item returned
+        $.each(response.data, function (i, image) {
+            var url = response.data[i].images.fixed_height.url.replace('media3', 'i');            
+            var id = 'img-' + i;
+            var name = response.data[i].title;
+            var img = $('<div class="image-250 col-md-4"><img class="giphyimage" id="' + id + '" name="' + name + '" src="' + url + '" /></div>');
+            img.appendTo('#images');
+        });
+
+        //Add arrows for pagination  
+        //$('#leftpagination').empty();
+        //$('#rightpagination').empty();
+        //var leftarrows = $('<label style="margin:10px;">&lt;&lt;&nbsp;&nbsp;&nbsp;&lt;</label>');
+        //var rightarrows = $('<label style="margin:10px;">&gt;&nbsp;&nbsp;&nbsp;&gt;&gt;</label>');
+        //leftarrows.appendTo('#leftpagination');
+        //rightarrows.appendTo('#rightpagination');
+        //$('#leftpagination').hover(function () {
+        //    $(this).css('cursor', 'pointer');
+        //});
+        //$('#rightpagination').hover(function () {
+        //    $(this).css('cursor', 'pointer');
+        //});
+
+        //Handle the image click
+        $('.giphyimage').on("click", function (e) {
+            window.location.href = '/Gifs/Create?imgurl=' + $(this).attr('src') + '&imgname=' + $(this).attr('name');
+        });
+
+        //Handle the mouseover to turn cursor to pointer
+        $('#images').hover(function () {
+            $(this).css('cursor', 'pointer');
+        });
+        return this;
+    }
+</script>
